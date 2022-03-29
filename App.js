@@ -1,29 +1,36 @@
 import { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 
 export default function App() {
   const [name, setName] = useState("Muddy");
-  const [person, setPerson] = useState({
-    name: "hitman",
-    age: 47,
-  });
+  const [age, setAge] = useState(17);
   const clickHandler = () => {
     setName(name === "Muddy" ? "Shang-chii" : "Muddy");
-    setPerson(
-      person.name === "hitman"
-        ? { name: "batman", age: 28 }
-        : {
-            name: "hitman",
-            age: 47,
-          }
-    );
   };
   return (
     <View style={styles.container}>
-      <Text>my name is {name}!</Text>
+      <Text>Enter name:</Text>
+      <TextInput
+        multiline
+        value={name}
+        style={styles.input}
+        placeholder="eg. Hitman"
+        onChangeText={(e) => {
+          setName(e);
+        }}
+      />
+      <Text>Enter age:</Text>
+      <TextInput
+        value={age.toString()}
+        style={styles.input}
+        keyboardType="numeric"
+        placeholder="eg. 47"
+        onChangeText={(e) => {
+          setAge(e);
+        }}
+      />
       <Text>
-        Their name is {person.name} and their age is {person.age}{" "}
+        my name is {name}! and my age is {age}.
       </Text>
       <View style={styles.buttonContainer}>
         <Button title="Update name" onPress={clickHandler} />
@@ -39,19 +46,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  header: {
-    backgroundColor: "pink",
-    padding: 20,
-  },
-  boldText: {
-    fontWeight: "bold",
-  },
-  body: {
-    backgroundColor: "yellow",
-    padding: 20,
-    fontWeight: "bold",
-  },
+  // header: {
+  //   backgroundColor: "pink",
+  //   padding: 20,
+  // },
+  // boldText: {
+  //   fontWeight: "bold",
+  // },
+  // body: {
+  //   backgroundColor: "yellow",
+  //   padding: 20,
+  //   fontWeight: "bold",
+  // },
   buttonContainer: {
     marginTop: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#777",
+    padding: 8,
+    margin: 10,
+    width: 200,
   },
 });
