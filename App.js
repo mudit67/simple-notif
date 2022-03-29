@@ -1,23 +1,32 @@
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 
 export default function App() {
+  const [name, setName] = useState("Muddy");
+  const [person, setPerson] = useState({
+    name: "hitman",
+    age: 47,
+  });
+  const clickHandler = () => {
+    setName(name === "Muddy" ? "Shang-chii" : "Muddy");
+    setPerson(
+      person.name === "hitman"
+        ? { name: "batman", age: 28 }
+        : {
+            name: "hitman",
+            age: 47,
+          }
+    );
+  };
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.boldText}>Yo!</Text>
-      </View>
-      <View style={styles.body}>
-        <Text style={styles.boldText}>
-          <Text> Yo!</Text>
-          Lorem ipsum dolor sit amet consectetur
-        </Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur
-        </Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur
-        </Text>
+      <Text>my name is {name}!</Text>
+      <Text>
+        Their name is {person.name} and their age is {person.age}{" "}
+      </Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Update name" onPress={clickHandler} />
       </View>
     </View>
   );
@@ -40,6 +49,9 @@ const styles = StyleSheet.create({
   body: {
     backgroundColor: "yellow",
     padding: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    marginTop: 20,
   },
 });
