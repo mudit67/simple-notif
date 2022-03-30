@@ -1,13 +1,8 @@
 import { useState } from "react";
 import Header from "./components/header";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import TodoItem from "./components/todoItem";
+import AddTodo from "./components/addTodo";
 
 export default function App() {
   const [todos, setTodos] = useState([
@@ -16,7 +11,13 @@ export default function App() {
     { text: "play on the switch", key: "3" },
   ]);
   const pressHandler = (id) => {
-    setTodos(prevTodos => (prevTodos.filter(({key}) => id!==key)));
+    setTodos((prevTodos) => prevTodos.filter(({ key }) => id !== key));
+  };
+  const submitHandler = (text) => {
+    setTodos((prevTodos) => {
+      let lastKey = prevTodos.length ? Number(prevTodos[prevTodos.length - 1]["key"]) : 0; 
+      return [...prevTodos, { text, key: (lastKey + 1).toString() }];
+    });
   };
   return (
     <View style={styles.container}>
@@ -24,6 +25,7 @@ export default function App() {
       <Header />
       <View style={styles.content}>
         {/* to do form */}
+        <AddTodo submitHandler={submitHandler} />
         <View style={styles.list}>
           <FlatList
             data={todos}
