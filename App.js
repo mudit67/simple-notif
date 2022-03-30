@@ -6,14 +6,14 @@ export default function App() {
     { name: "muddy", key: "1" },
     { name: "unni", key: "2" },
     { name: "tachyon", key: "3" },
-    { name: "tanya", key: "4" },
+    { name: "chini", key: "4" },
     { name: "bat", key: "5" },
     { name: "inert", key: "6" },
     { name: "ghost", key: "7" },
   ]);
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {people.map((person) => (
           <View key={person.key}>
             <Text style={styles.person}>{person.name}</Text>
