@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Header from './components/header';
 import {
   StyleSheet,
   Text,
@@ -8,36 +9,26 @@ import {
 } from "react-native";
 
 export default function App() {
-  const [people, setPeople] = useState([
-    { name: "muddy", sup: "1" },
-    { name: "unni", sup: "2" },
-    { name: "tachyon", sup: "3" },
-    { name: "chini", sup: "4" },
-    { name: "bat", sup: "5" },
-    { name: "inert", sup: "6" },
-    { name: "ghost", sup: "7" },
+  const [todos, setTodos] = useState([
+    { text: "buy coffee", key: "1" },
+    { text: "create an app", key: "2" },
+    { text: "play on the switch", key: "3" },
   ]);
-  const pressHandler = (id) => {
-    console.log(id);
-    setPeople((prevPeople) => prevPeople.filter(({ sup }) => sup !== id));
-  };
   return (
     <View style={styles.container}>
-      <FlatList
-        keyExtractor={(item) => item.sup}
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
-        data={people}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => {
-              pressHandler(item.sup);
+      {/* Header */}
+      <Header/>
+      <View style={styles.content}>
+        {/* to do form */}
+        <View style={styles.list}>
+          <FlatList
+            data={todos}
+            renderItem={({ item }) => {
+              return <Text>{item.text}</Text>;
             }}
-          >
-            <Text style={styles.person}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-      />
+          />
+        </View>
+      </View>
     </View>
   );
 }
@@ -46,14 +37,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 40,
-    paddingHorizontal: 20,
+    marginTop: 30
   },
-  person: {
-    marginHorizontal: 10,
-    marginTop: 40,
-    padding: 30,
-    backgroundColor: "pink",
-    fontSize: 24,
+  content: {
+    padding: 40,
   },
+  list: {
+    marginTop: 20
+  }
 });
