@@ -1,28 +1,67 @@
 import { useState } from "react";
 import Header from "./components/header";
-import { StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
-import TodoItem from "./components/todoItem";
-import AddTodo from "./components/addTodo";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import NotifItem from "./components/notifItem";
+import AddNotif from "./components/addNotif";
 
 export default function App() {
-  const [todos, setTodos] = useState([
-    { text: "buy coffee", key: "1" },
-    { text: "create an app", key: "2" },
-    { text: "play on the switch", key: "3" },
+  const [notifs, setNotifs] = useState([
+    { text: "buy coffee", time: "12:15", key: "3" },
+    { text: "create an app", time: "15:20", key: "2" },
+    { text: "play on the switch", time: "23:30", key: "1" },
   ]);
   const pressHandler = (id) => {
-    setTodos((prevTodos) => prevTodos.filter(({ key }) => id !== key));
+    setNotifs((prevNotifs) => prevNotifs.filter(({ key }) => id !== key));
   };
-  const submitHandler = (text) => {
+  const submitHandler = (text, hours, minutes) => {
     if (text.length >= 4) {
-      setTodos((prevTodos) => {
-        let lastKey = prevTodos.length
-          ? Number(prevTodos[prevTodos.length - 1]["key"])
-          : 0;
-        return [{ text, key: (lastKey + 1).toString() }, ...prevTodos];
-      });
+      hours = Number(hours) || "00" ;
+      minutes = Number(minutes) || "00";
+      if (hours <= 23 && hours >= 0) {
+        if (minutes <= 59 && minutes >= 0) {
+          setNotifs((prevNotifs) => {
+            let lastKey = prevNotifs.length
+              ? Number(prevNotifs[0]["key"])
+              : 0;
+            console.log(lastKey, notifs);
+            return [
+              {
+                text,
+                key: (lastKey + 1).toString(),
+                time: hours.toString() + ":" + minutes.toString(),
+              },
+              ...prevNotifs,
+            ];
+          });
+        } else {
+          Alert.alert("OOPS!", "Invalid Minutes", [
+            {
+              text: "Understood",
+              onPress: () => {
+                // console.log("alert closed");
+              },
+            },
+          ]);
+        }
+      } else {
+        Alert.alert("OOPS!", "Invalid Hours", [
+          {
+            text: "Understood",
+            onPress: () => {
+              // console.log("alert closed");
+            },
+          },
+        ]);
+      }
     } else {
-      Alert.alert("OOPS!", "Todos must be over 3 characters long.", [
+      Alert.alert("OOPS!", "Notifs must be over 3 characters long.", [
         {
           text: "Understood",
           onPress: () => {
@@ -33,21 +72,23 @@ export default function App() {
     }
   };
   return (
-    <TouchableWithoutFeedback onPress={() => {
-      Keyboard.dismiss();
-      console.log('keyboard dismissed!');
-    }}>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
+        console.log("keyboard dismissed!");
+      }}
+    >
       <View style={styles.container}>
         {/* Header */}
         <Header />
         <View style={styles.content}>
           {/* to do form */}
-          <AddTodo submitHandler={submitHandler} />
+          <AddNotif submitHandler={submitHandler} />
           <View style={styles.list}>
             <FlatList
-              data={todos}
+              data={notifs}
               renderItem={({ item }) => {
-                return <TodoItem item={item} pressHandler={pressHandler} />;
+                return <NotifItem item={item} pressHandler={pressHandler} />;
               }}
             />
           </View>
